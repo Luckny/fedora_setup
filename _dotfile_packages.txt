@@ -1,0 +1,7 @@
+stow
+hyprland
+kitty
+tmux
+waybar
+mako
+swaylock

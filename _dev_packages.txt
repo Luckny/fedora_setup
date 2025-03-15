@@ -1,0 +1,13 @@
+gtest-devel
+gtest
+clang
+gcc-c++
+cmake
+llvm-devel
+clang-format
+readline-devl
+cmake
+gcc
+kernel-devel
+ncurses-compat-libs
+code

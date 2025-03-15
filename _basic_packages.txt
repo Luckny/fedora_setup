@@ -1,0 +1,9 @@
+neovim
+lazygit
+google-chrome-stable
+eza
+zoxide
+bat
+btop
+procs
+tldr
