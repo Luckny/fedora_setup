@@ -3,9 +3,9 @@
 set -e # Exit immediately if any command fails
 
 # shellcheck source=/dev/null
-source "$HOME/dotfiles/setup_script/utils.sh"
+source "$HOME/fedora_setup/utils.sh"
 # shellcheck source=/dev/null
-source "$HOME/dotfiles/setup_script/git_utils.sh"
+source "$HOME/fedora_setup/git_utils.sh"
 
 echo "Starting setup..."
 
