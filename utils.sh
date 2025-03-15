@@ -103,22 +103,33 @@ install_packages_from_file() {
   install_packages "${packages[@]}"
 }
 
-# Prompt user to reboot if necessary
 prompt_reboot() {
   echo "🔄 A reboot is recommended to finalize the setup."
-  read -r -p "🔐 Would you like to reboot now? (yes/no): " choice
+  echo "Options:"
+  echo "  1) Update system and reboot (might take a while)"
+  echo "  2) Reboot now"
+  echo "  3) Do nothing"
+
+  read -r -p "🔐 What would you like to do? (1/2/3): " choice
   case "$choice" in
-  yes | y)
+  1)
+    echo -e "\n⚙️ Updating system before rebooting...\n"
+    sudo dnf update -y
+    echo -e "\n✅ Update complete. Rebooting now...\n"
+    sleep 2
+    sudo reboot
+    ;;
+  2)
     echo -e "\n⚙️ Rebooting now...\n"
     sleep 2
     sudo reboot
     ;;
-  no | n)
+  3)
     echo -e "✅ Setup complete. Reboot later when convenient.\n"
     return 1
     ;;
   *)
-    echo -e "❌ Invalid choice. Please answer with 'yes' or 'no'.\n"
+    echo -e "❌ Invalid choice. Please enter 1, 2, or 3.\n"
     prompt_reboot
     ;;
   esac

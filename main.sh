@@ -67,9 +67,6 @@ fi
 
 # Main setup process if first run
 if $run_all; then
-  echo -e "🔄  Updating system...\n"
-  sudo dnf update -y
-
   # Install required packages
   echo -e "📦 Installing base packages...\n"
   install_packages_from_file "$basic_packages_file"
@@ -150,6 +147,6 @@ fi
 
 echo -e "✅ All tasks executed successfully.\n"
 
-if $needs_reboot; then
+if $run_all || $needs_reboot; then
   prompt_reboot
 fi
