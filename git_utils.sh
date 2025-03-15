@@ -19,7 +19,7 @@ test_git_ssh_connection() {
   if [[ ! "$output" == *"You've successfully authenticated"* ]]; then
     echo -e "❌ [ERROR] SSH connection to GitHub failed."
     prompt_ssh_key_addition
-    return 1
+    return 0
   else
     echo -e "✅ [SUCCESS] SSH connection to GitHub successful."
     return 0
@@ -46,7 +46,8 @@ setup_git_ssh() {
     echo -e "\n📌 Copy the above key and add it to GitHub: https://github.com/settings/keys"
 
     sleep 1
-    google-chrome --app=https://github.com/setttings/keys
+    google-chrome --app=https://github.com/settings/keys >/dev/null 2>&1 &
+    disown
     sleep 2
 
     read -r -p "🔄 Press any key after adding the SSH key to GitHub..."

@@ -54,7 +54,6 @@ fi
 # Initial setup for the first run
 if $run_all; then
   echo -e "🚀 First run detected. Running the initial setup...\n"
-  echo -e "⚙️ Don't forget to set \`first_run=false\` in \`main.sh\` after this setup.\n"
 fi
 
 # Install Zsh if not installed
@@ -74,6 +73,12 @@ if $run_all; then
   # Install required packages
   echo -e "📦 Installing base packages...\n"
   install_packages_from_file "$basic_packages_file"
+
+  # Set up 1Password and Syncthing
+  echo -e "🔑 Setting up 1Password...\n"
+  setup_1password
+  echo -e "🔄 Enabling Syncthing...\n"
+  enable_syncthing
 
   # Check if SSH connection is set up before cloning
   if test_git_ssh_connection; then
@@ -96,12 +101,6 @@ if $run_all; then
   # Install development packages
   echo -e "📦 Installing development packages...\n"
   install_packages_from_file "$dev_packages_file"
-
-  # Set up 1Password and Syncthing
-  echo -e "🔑 Setting up 1Password...\n"
-  setup_1password
-  echo -e "🔄 Enabling Syncthing...\n"
-  enable_syncthing
 
 else
 
