@@ -13,10 +13,9 @@ setup_1password() {
   echo -e "\n🔐 Turn on the 1Password desktop app integration 🖥️"
   echo -e "👉 Go to: Your account -> settings > Security > Unlock using system authentication"
   echo -e "⚙️ Then, head to settings > Developer > Integrate with 1Password CLI"
-  echo -e "🔑 Press Ctrl-C when you're done 🎯\n"
 
   # Run 1Password in the background silently (without logging info)
-  echo -e "\n🛠️ Running 1Password in the background... hang tight!\n"
+  echo -e "\n🛠️ Running 1Password... hang tight!\n"
   1password --log 'off' >/dev/null 2>&1 &
   disown
 

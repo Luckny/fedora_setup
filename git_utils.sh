@@ -42,8 +42,12 @@ setup_git_ssh() {
 
     # display_ssh_key
     echo -e "\n📜 Your SSH public key:\n"
-    cat "$HOME/.ssh/id_ed25519.pub"
+    bat "$HOME/.ssh/id_ed25519.pub"
     echo -e "\n📌 Copy the above key and add it to GitHub: https://github.com/settings/keys"
+
+    sleep 1
+    google-chrome --app=https://github.com/setttings/keys
+    sleep 2
 
     read -r -p "🔄 Press any key after adding the SSH key to GitHub..."
 
@@ -95,27 +99,32 @@ prompt_ssh_key_addition() {
 
 # Function to clone repositories
 clone_repos() {
-  echo -e "\n🔄 Cloning configured repositories..."
-  dotfiles="$HOME/dotfiles"
-  neovim="$HOME/.config/nvim"
+  if test_git_ssh_connection; then
 
-  cloned_at_least_one=false
+    echo -e "\n🔄 Cloning configured repositories..."
+    dotfiles="$HOME/dotfiles"
+    neovim="$HOME/.config/nvim"
 
-  if [ ! -d "$dotfiles" ]; then
-    echo -e "📂 Cloning dotfiles to $dotfiles..."
-    git clone "git@github.com:Luckny/dotfiles.git" ~/dotfiles
-    cloned_at_least_one=true
-  fi
+    cloned_at_least_one=false
 
-  if [ ! -d "$neovim" ]; then
-    echo -e "📂 Cloning Neovim config to $neovim..."
-    git clone "git@github.com:Luckny/Neovim.git" ~/.config/nvim
-    cloned_at_least_one=true
-  fi
+    if [ ! -d "$dotfiles" ]; then
+      echo -e "📂 Cloning dotfiles to $dotfiles..."
+      git clone "git@github.com:Luckny/dotfiles.git" ~/dotfiles
+      cloned_at_least_one=true
+    fi
 
-  if $cloned_at_least_one; then
-    echo -e "✅ [SUCCESS] All repositories cloned successfully."
+    if [ ! -d "$neovim" ]; then
+      echo -e "📂 Cloning Neovim config to $neovim..."
+      git clone "git@github.com:Luckny/Neovim.git" ~/.config/nvim
+      cloned_at_least_one=true
+    fi
+
+    if $cloned_at_least_one; then
+      echo -e "✅ [SUCCESS] All repositories cloned successfully."
+    else
+      echo -e "✔️   No action needed."
+    fi
   else
-    echo -e "✔️   No action needed."
+    echo "Cloning skipped due to SSH setup not being completed."
   fi
 }

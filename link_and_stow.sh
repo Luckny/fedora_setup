@@ -6,9 +6,11 @@ stow_dotfiles() {
   # Link .zshrc
   echo -e "📌 [INFO] Linking dotfiles/.zshrc..."
   file="$HOME/.zshrc"
+
+  # Check if the file exists and remove it
   if [ -f "$file" ]; then
     echo -e "⚠️  [WARNING] Removing existing $file"
-    rm "$file"
+    rm -f "$file"
   fi
 
   if ln -s ~/dotfiles/.zshrc ~/.zshrc; then
