@@ -37,7 +37,17 @@ install_packages "neovim" "hyprland" "kitty" "stow" "tmux" "lazygit" "waybar" "m
 # Build and install keyd if not installed
 if ! is_installed "keyd"; then
   echo "[+] keyd not found. Building from source..."
-  mkdir -p ~/builds/keyd
+
+  mkdir -p ~/builds
+
+  if [ -d ~/builds/keyd ] && [ -f ~/builds/keyd/Makefile ]; then
+    echo "[✔] Found existing keyd source. Using it."
+  else
+    echo "[✖] keyd source not found. Cloning..."
+    rm -rf ~/builds/keyd # Remove any incomplete or broken directory
+    clone_keyd_into_builds
+  fi
+
   cd ~/builds/keyd || {
     echo "[✖] Failed to navigate to ~/builds/keyd"
     exit 1
@@ -45,6 +55,7 @@ if ! is_installed "keyd"; then
 
   if make && sudo make install; then
     echo "[✔] keyd installed successfully."
+
     # Configure keyd
     configure_keyd
     echo "[✔] Keyd configuration applied."

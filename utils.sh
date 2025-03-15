@@ -112,3 +112,12 @@ stow_dotfiles() {
   cd ~ || exit 1
   echo "[✔] Dotfiles stowed."
 }
+
+# Function to clone keyd if not present
+clone_keyd_into_builds() {
+  echo "[+] Cloning keyd repository..."
+  git clone https://github.com/rvaiya/keyd.git ~/builds/keyd || {
+    echo "[✖] Failed to clone keyd repository."
+    exit 1
+  }
+}
