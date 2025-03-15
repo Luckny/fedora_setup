@@ -7,3 +7,6 @@ bat
 btop
 procs
 tldr
+1password
+1password-cli
+syncthing

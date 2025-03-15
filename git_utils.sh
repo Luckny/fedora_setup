@@ -1,21 +1,5 @@
 #!/bin/bash
 
-GITHUB_EMAIL="luckny.simelus@gmail.com"
-GITHUB_NAME="Luckny"
-
-# Function to generate an SSH key
-generate_ssh_key() {
-  SSH_KEY="$HOME/.ssh/id_ed25519"
-
-  if [ ! -f "$SSH_KEY" ]; then
-    echo -e "\n🔑 Generating a new SSH key..."
-    ssh-keygen -t ed25519 -C "$GITHUB_EMAIL"
-    echo -e "✅ [SUCCESS] SSH key generated."
-  else
-    echo -e "✔️  SSH key already exists."
-  fi
-}
-
 # Function to start ssh-agent and add the key
 add_ssh_key_to_agent() {
   echo -e "\n🚀 Starting ssh-agent..."
@@ -24,24 +8,6 @@ add_ssh_key_to_agent() {
   echo -e "🔑 Adding SSH key to the agent..."
   ssh-add "$HOME/.ssh/id_ed25519"
   echo -e "✅ [SUCCESS] SSH key added to agent."
-}
-
-# Function to display SSH public key
-display_ssh_key() {
-  echo -e "\n📜 Your SSH public key:\n"
-  cat "$HOME/.ssh/id_ed25519.pub"
-  echo -e "\n📌 Copy the above key and add it to GitHub: https://github.com/settings/keys"
-}
-
-# Function to wait for user confirmation
-wait_for_github_key_addition() {
-  read -r -p "🔄 Press Enter after adding the SSH key to GitHub..."
-}
-
-# Function to test SSH connection
-test_ssh_connection() {
-  echo -e "\n🔍 Testing SSH connection to GitHub..."
-  ssh -T git@github.com
 }
 
 # Function to test SSH connection and prompt if failed
@@ -60,10 +26,43 @@ test_git_ssh_connection() {
   fi
 }
 
+setup_git_ssh() {
+  # Prompt the user for their GitHub username and email
+  read -r -p "Enter your GitHub username: " GITHUB_NAME
+  read -r -p "Enter your GitHub email: " GITHUB_EMAIL
+
+  SSH_KEY="$HOME/.ssh/id_ed25519"
+
+  if [ ! -f "$SSH_KEY" ]; then
+    echo -e "\n🔑 Generating a new SSH key..."
+    ssh-keygen -t ed25519 -C "$GITHUB_EMAIL"
+    echo -e "✅ [SUCCESS] SSH key generated."
+
+    add_ssh_key_to_agent
+
+    # display_ssh_key
+    echo -e "\n📜 Your SSH public key:\n"
+    cat "$HOME/.ssh/id_ed25519.pub"
+    echo -e "\n📌 Copy the above key and add it to GitHub: https://github.com/settings/keys"
+
+    read -r -p "🔄 Press any key after adding the SSH key to GitHub..."
+
+    ssh -T git@github.com
+
+    add_default_git_config "$GITHUB_NAME" "$GITHUB_EMAIL"
+  else
+    echo -e "✔️  SSH key already exists."
+  fi
+
+}
+
 # setup git config
 add_default_git_config() {
-  git config --global user.name "Luckny Simelus"
-  git config --global user.email "$GITHUB_NAME"
+  local GITHUB_NAME="$1"
+  local GITHUB_EMAIL="$2"
+
+  git config --global user.name "$GITHUB_NAME"
+  git config --global user.email "$GITHUB_EMAIL"
   git config --global core.editor "/usr/bin/nvim"
   git config --global pull.rebase true
   git config --global init.defaultBranch main
@@ -80,12 +79,7 @@ prompt_ssh_key_addition() {
   case "$choice" in
   yes | y)
     echo -e "\n⚙️  Proceeding to generate and add SSH key..."
-    generate_ssh_key
-    add_ssh_key_to_agent
-    display_ssh_key
-    wait_for_github_key_addition
-    test_ssh_connection
-    add_default_git_config
+    setup_git_ssh
     return 0
     ;;
   no | n)
