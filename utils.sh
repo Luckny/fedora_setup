@@ -37,6 +37,21 @@ prepare_1password() {
   fi
 }
 
+prepare_vscode() {
+  echo -e "  📦 Enabling repository for vscode..."
+  if sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc; then
+    echo -e "  ✅ microsoft key added."
+    echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo >/dev/null
+
+    echo -e "  ✅ microsoft repository added."
+    sudo dnf check-update -y code
+  else
+    echo -e "  ❌ [ERROR] failed to add key for 1password. Exiting..."
+    exit 1
+  fi
+
+}
+
 # Install missing packages
 install_packages() {
   # Check if a package list was passed, otherwise exit with an error message
@@ -61,6 +76,10 @@ install_packages() {
       # Special case for 1password
       if [[ "$pkg" == "1password" ]]; then
         prepare_1password
+      fi
+      # Special case for vs-code
+      if [[ "$pkg" == "code" ]]; then
+        prepare_vscode
       fi
 
       to_install+=("$pkg")

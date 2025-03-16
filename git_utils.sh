@@ -99,7 +99,7 @@ prompt_ssh_key_addition() {
 }
 
 # Function to clone repositories
-clone_repos() {
+clone_repos_if_not_exist() {
   if test_git_ssh_connection; then
 
     echo -e "\n🔄 Cloning configured repositories..."

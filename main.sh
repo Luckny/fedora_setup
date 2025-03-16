@@ -22,6 +22,8 @@ basic_packages_file="$HOME/fedora_setup/_basic_packages.txt"
 dotfile_packages_file="$HOME/fedora_setup/_dotfile_packages.txt"
 dev_packages_file="$HOME/fedora_setup/_dev_packages.txt"
 
+stow_list=("hypr" "tmux" "kitty" "code" "lazygit")
+
 run_all=false
 needs_reboot=false
 
@@ -80,7 +82,7 @@ if $run_all; then
   # Check if SSH connection is set up before cloning
   if test_git_ssh_connection; then
     echo -e "🔁 Cloning repositories...\n"
-    clone_repos
+    clone_repos_if_not_exist
   else
     echo "🚫 Cloning skipped due to incomplete SSH setup."
   fi
@@ -88,7 +90,7 @@ if $run_all; then
   # Install dotfile packages and stow them
   echo -e "📦 Installing and stowing dotfiles...\n"
   install_packages_from_file "$dotfile_packages_file"
-  stow_dotfiles "hypr" "tmux" "kitty"
+  stow_dotfiles "${stow_list[@]}"
 
   # Build keyd and prompt for reboot
   echo -e "🔧 Building Keyd...\n"
@@ -116,13 +118,17 @@ else
 
     --clone-repos)
       echo -e "🔁 Cloning repositories...\n"
-      clone_repos
+      clone_repos_if_not_exist
       ;;
 
     --stow)
       echo -e "📦 Installing and stowing dotfiles...\n"
       install_packages_from_file "$dotfile_packages_file"
-      stow_dotfiles "hypr" "tmux" "kitty"
+      clone_repos_if_not_exist
+      cd ~/dotfiles || exit
+      git pull
+      cd - || exit
+      stow_dotfiles "${stow_list[@]}"
       ;;
 
     --build)

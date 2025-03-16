@@ -8,3 +8,6 @@ cmake
 gcc
 kernel-devel
 ncurses-compat-libs
+code
+check
+check-devel
