@@ -29,7 +29,8 @@ install_hyprshot() {
     exit 1
   }
 
-  if ln -s $(pwd)/Hyprshot/hyprshot $HOME/.local/bin; then
+  if ln -s ~/builds/hyprshot/hyprshot $HOME/.local/bin; then
+    sudo chmod +x ~/builds/hyprshot/hyprshot
     echo -e "✅ [SUCCESS] $package_name installed successfully."
   else
     echo -e "❌ [ERROR] Failed to build/install $package_name. Exiting..."

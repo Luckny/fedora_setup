@@ -11,3 +11,4 @@ ncurses-compat-libs
 code
 check
 check-devel
+readline-devel
