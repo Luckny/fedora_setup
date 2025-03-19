@@ -12,3 +12,10 @@ code
 check
 check-devel
 readline-devel
+mesa-libGL-devel
+libglvnd-devel
+libX11-devel
+libXcursor-devel
+libXrandr-devel
+libXinerama-devel
+libXi-devel
