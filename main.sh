@@ -8,7 +8,7 @@ source "$HOME/fedora_setup/git_utils.sh"
 # shellcheck source=/dev/null
 source "$HOME/fedora_setup/link_and_stow.sh"
 # shellcheck source=/dev/null
-source "$HOME/fedora_setup/build_keyd.sh"
+source "$HOME/fedora_setup/build_packages.sh"
 # shellcheck source=/dev/null
 source "$HOME/fedora_setup/setup_1password.sh"
 # shellcheck source=/dev/null
@@ -103,24 +103,22 @@ if $run_all; then
 
 else
 
-  # Loop through all arguments for specific tasks
-  for arg in "$@"; do
-    case "$arg" in
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
     --help)
       show_help
       exit 0
       ;;
-
     --update)
       echo -e "🔄 Updating system...\n"
       sudo dnf update -y
+      shift
       ;;
-
     --clone-repos)
       echo -e "🔁 Cloning repositories...\n"
       clone_repos_if_not_exist
+      shift
       ;;
-
     --stow)
       echo -e "📦 Installing and stowing dotfiles...\n"
       install_packages_from_file "$dotfile_packages_file"
@@ -129,21 +127,40 @@ else
       git pull
       cd - || exit
       stow_dotfiles "${stow_list[@]}"
+      shift
       ;;
-
     --build)
-      echo -e "🔧 Building Keyd...\n"
-      build_keyd
-      needs_reboot=true
-      ;;
+      # Remove --build flag
+      shift
+      # Collect build arguments into an array and shift them from $@
+      build_args=()
+      while [[ $# -gt 0 && "$1" != --* ]]; do
+        build_args+=("$1")
+        shift
+      done
 
+      if [[ ${#build_args[@]} -eq 0 ]]; then
+        echo -e "❌ Error: --build requires at least one argument.\n"
+        show_help
+        exit 1
+      fi
+
+      for pkg in "${build_args[@]}"; do
+        build_package "$pkg"
+      done
+      ;;
     --dev)
       echo -e "📦 Installing development packages...\n"
       install_packages_from_file "$dev_packages_file"
+      shift
       ;;
-
+    --dots)
+      echo -e "📦 Installing dotfiles packages...\n"
+      install_packages_from_file "$dotfile_packages_file"
+      shift
+      ;;
     *)
-      echo -e "❌ Invalid flag: $arg\n"
+      echo -e "❌ Invalid flag: $1\n"
       show_help
       exit 1
       ;;

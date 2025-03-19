@@ -5,8 +5,9 @@ show_help() {
   echo -e "  --update        Update system packages."
   echo -e "  --clone-repos   Clone repositories via SSH (if setup)."
   echo -e "  --stow          Stow dotfiles (hypr, tmux, kitty...)."
-  echo -e "  --build         Build configured packages in $HOME/builds."
+  echo -e "  --build <pkg> [pkg2 pkg3 ...]   Build specified packages in $HOME/builds."
   echo -e "  --dev           Install development packages."
+  echo -e "  --dots           Install dotfiles packages."
   echo -e "  --help          Display this help message."
   echo -e "\n⚙️ Example usage: env_setup --update --clone-repos --stow\n"
 }

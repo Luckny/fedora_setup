@@ -153,3 +153,24 @@ prompt_reboot() {
     ;;
   esac
 }
+
+# Function to clone keyd if not present
+clone_into_builds() {
+  local short_link=$1
+  local name=$2
+
+  mkdir -p ~/builds
+
+  cd ~/builds || {
+    echo -e "❌ [ERROR] Failed to navigate to ~/builds. Exiting..."
+    exit 1
+  }
+
+  echo -e "\n🔄 Cloning repository..."
+  if git clone https://github.com/"$short_link".git "$name"; then
+    echo -e "✅ [SUCCESS] repository cloned successfully."
+  else
+    echo -e "❌ [ERROR] Failed to clone repository. Exiting..."
+    exit 1
+  fi
+}

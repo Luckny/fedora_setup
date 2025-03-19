@@ -5,3 +5,4 @@ tmux
 waybar
 mako
 swaylock
+hyprshot
