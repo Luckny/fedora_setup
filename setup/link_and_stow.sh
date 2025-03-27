@@ -38,22 +38,11 @@ stow_dotfiles() {
     if [ -d "$folder" ]; then
       echo -e "\n📦 [INFO] Stowing $folder..."
 
-      # Remove existing configurations safely
-      if [ -d "${HOME:?}/.config/$folder" ]; then
-        echo -e "⚠️  [WARNING] Removing existing config: ${HOME:?}/.config/$folder"
-        rm -rf "${HOME:?}/.config/${folder:?}"
-      fi
-      if [ -d "${HOME:?}/$folder" ]; then
-        echo -e "⚠️  [WARNING] Removing existing config: ${HOME:?}/$folder"
-        rm -rf "${HOME:?}/${folder:?}"
-      fi
-
       # Stow the folder
-      if stow "$folder"; then
+      if stow "$folder" 2>/dev/null; then
         echo -e "✅ [SUCCESS] $folder stowed."
       else
-        echo -e "❌ [ERROR] Failed to stow $folder. Exiting..."
-        exit 1
+        echo -e "❌ [ERROR] Failed to stow $folder. skipping..."
       fi
     else
       echo -e "⚠️  [WARNING] ~/dotfiles/$folder does not exist. Skipping..."

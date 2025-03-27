@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck source=/dev/null
-source "$HOME/fedora_setup/build_keyd.sh"
-source "$HOME/fedora_setup/build_hyprshot.sh"
+source "$HOME/scripts/setup/build_keyd.sh"
+source "$HOME/scripts/setup/build_hyprshot.sh"
 
 # Function to build a package
 build_package() {

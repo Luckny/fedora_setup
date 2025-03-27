@@ -15,6 +15,8 @@ source "$HOME/scripts/setup/setup_1password.sh"
 source "$HOME/scripts/setup/enable_processes.sh"
 # shellcheck source=/dev/null
 source "$HOME/scripts/setup/help.sh"
+# shellcheck source=/dev/null
+source "$HOME/scripts/setup/build_packages.sh"
 
 echo "Starting setup..."
 
