@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # shellcheck source=/dev/null
-source "$HOME/fedora_setup/utils.sh"
+source "$HOME/scripts/setup/utils.sh"
 
 setup_1password() {
   if ! is_installed "op"; then

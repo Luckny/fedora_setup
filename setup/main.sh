@@ -2,25 +2,25 @@
 set -e # Exit immediately if any command fails
 
 # shellcheck source=/dev/null
-source "$HOME/fedora_setup/utils.sh"
+source "$HOME/scripts/setup/utils.sh"
 # shellcheck source=/dev/null
-source "$HOME/fedora_setup/git_utils.sh"
+source "$HOME/scripts/setup/git_utils.sh"
 # shellcheck source=/dev/null
-source "$HOME/fedora_setup/link_and_stow.sh"
+source "$HOME/scripts/setup/link_and_stow.sh"
 # shellcheck source=/dev/null
-source "$HOME/fedora_setup/build_packages.sh"
+source "$HOME/scripts/setup/build_keyd.sh"
 # shellcheck source=/dev/null
-source "$HOME/fedora_setup/setup_1password.sh"
+source "$HOME/scripts/setup/setup_1password.sh"
 # shellcheck source=/dev/null
-source "$HOME/fedora_setup/enable_processes.sh"
+source "$HOME/scripts/setup/enable_processes.sh"
 # shellcheck source=/dev/null
-source "$HOME/fedora_setup/help.sh"
+source "$HOME/scripts/setup/help.sh"
 
 echo "Starting setup..."
 
-basic_packages_file="$HOME/fedora_setup/_basic_packages.txt"
-dotfile_packages_file="$HOME/fedora_setup/_dotfile_packages.txt"
-dev_packages_file="$HOME/fedora_setup/_dev_packages.txt"
+basic_packages_file="$HOME/scripts/setup/_basic_packages.txt"
+dotfile_packages_file="$HOME/scripts/setup/_dotfile_packages.txt"
+dev_packages_file="$HOME/scripts/setup/_dev_packages.txt"
 
 stow_list=("hypr" "tmux" "kitty" "code" "lazygit")
 

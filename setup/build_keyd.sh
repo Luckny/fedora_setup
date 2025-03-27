@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # shellcheck source=/dev/null
-source "$HOME/fedora_setup/utils.sh"
+source "$HOME/scripts/setup/utils.sh"
 
 # Function to configure keyd
 configure_keyd() {
