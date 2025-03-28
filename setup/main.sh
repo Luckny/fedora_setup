@@ -14,7 +14,7 @@ source "$HOME/scripts/setup/setup_1password.sh"
 # shellcheck source=/dev/null
 source "$HOME/scripts/setup/enable_processes.sh"
 # shellcheck source=/dev/null
-source "$HOME/scripts/setup/help.sh"
+source "$HOME/scripts/utils/help.sh"
 # shellcheck source=/dev/null
 source "$HOME/scripts/setup/build_packages.sh"
 
@@ -40,7 +40,7 @@ prompt_run() {
     ;;
   no | n)
     echo -e "\n❌ No flags provided. Please provide flags to specify the setup actions."
-    show_help
+    show_help "setup"
     exit 1
     ;;
   *)
@@ -108,7 +108,7 @@ else
   while [[ $# -gt 0 ]]; do
     case "$1" in
     --help)
-      show_help
+      show_help "setup"
       exit 0
       ;;
     --update)
@@ -148,7 +148,7 @@ else
 
       if [[ ${#build_args[@]} -eq 0 ]]; then
         echo -e "❌ Error: --build requires at least one argument.\n"
-        show_help
+        show_help "setup"
         exit 1
       fi
 
@@ -168,7 +168,7 @@ else
       ;;
     *)
       echo -e "❌ Invalid flag: $1\n"
-      show_help
+      show_help "setup"
       exit 1
       ;;
     esac

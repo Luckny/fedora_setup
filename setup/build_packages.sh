@@ -9,7 +9,7 @@ build_package() {
   # Loop through all arguments for specific tasks
   case "$package_name" in
   --help)
-    show_help
+    show_help "setup"
     exit 0
     ;;
 
@@ -26,7 +26,7 @@ build_package() {
 
   *)
     echo -e "❌ Invalid flag: $package_name\n"
-    show_help
+    show_help "setup"
     exit 1
     ;;
   esac
