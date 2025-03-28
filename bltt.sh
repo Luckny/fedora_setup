@@ -78,7 +78,9 @@ fi
 
 # Extract MAC address
 mac=$(echo "$selected" | awk '{print $1}')
-echo -e "\n🔗 Selected device: $selected"
+name=$(echo "$selected" | cut -d ' ' -f 2-)
+
+echo -e "\n🔗 Selected device: $name"
 
 # Pairing and connecting
 echo -e "\n⚡ Initiating connection to: $selected"
