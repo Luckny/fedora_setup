@@ -19,3 +19,5 @@ libXcursor-devel
 libXrandr-devel
 libXinerama-devel
 libXi-devel
+bluez-libs
+bluez-libs-devel

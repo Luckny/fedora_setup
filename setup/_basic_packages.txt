@@ -10,3 +10,4 @@ tldr
 1password
 1password-cli
 syncthing
+expect

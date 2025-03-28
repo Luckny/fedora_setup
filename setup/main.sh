@@ -116,6 +116,11 @@ else
       sudo dnf update -y
       shift
       ;;
+    --basic)
+      echo -e "📦 Installing and stowing dotfiles...\n"
+      install_packages_from_file "$basic_packages_file"
+      exit 0
+      ;;
     --clone-repos)
       echo -e "🔁 Cloning repositories...\n"
       clone_repos_if_not_exist
