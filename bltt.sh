@@ -1,20 +1,18 @@
 #!/bin/bash
 
 # shellcheck source=/dev/null
-source "$HOME/scripts/utils/help.sh"
+source "$HOME/scripts/utils/index.sh"
 
 # Default scan time in seconds
 DEFAULT_SCAN_TIME=10
-TRUST_DEVICE=false
 
 # Parse options
 while [[ "$#" -gt 0 ]]; do
   case "$1" in
-  --trust) TRUST_DEVICE=true ;;
   [0-9]*) SCAN_TIME="$1" ;;
   *)
     echo "⚠️ Unknown option: $1"
-    show_help "bltctl"
+    show_help "bltt"
     exit 1
     ;;
   esac
@@ -98,6 +96,15 @@ name=$(echo "$selected" | cut -d ' ' -f 2-)
 
 echo -e "\n🔗 Selected device: $name"
 
+# Ask user if they want to trust the device
+if prompt_yes_no "🤔 Do you want to trust this device?"; then
+  TRUST_DEVICE=true
+  echo "🔒 Device will be trusted."
+else
+  TRUST_DEVICE=false
+  echo "🔓 Device will not be trusted."
+fi
+
 # Pairing and connecting
 echo -e "\n⚡ Initiating connection to: $selected"
 
@@ -106,12 +113,13 @@ echo -e "\n⚡ Initiating connection to: $selected"
   echo -e "pair $mac\n" | bluetoothctl >/dev/null 2>&1
   sleep 2
 
+  echo -e "connect $mac\n" | bluetoothctl >/dev/null 2>&1
+
   # Conditionally trust the device
   if [ "$TRUST_DEVICE" = true ]; then
     echo -e "trust $mac\n" | bluetoothctl >/dev/null 2>&1
   fi
 
-  echo -e "connect $mac\n" | bluetoothctl >/dev/null 2>&1
 } &
 
 show_progress "🔄 Connecting to $selected..." $!

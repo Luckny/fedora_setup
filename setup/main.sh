@@ -3,19 +3,12 @@ set -e # Exit immediately if any command fails
 
 # shellcheck source=/dev/null
 source "$HOME/scripts/setup/utils.sh"
-# shellcheck source=/dev/null
+source "$HOME/scripts/utils/index.sh"
 source "$HOME/scripts/setup/git_utils.sh"
-# shellcheck source=/dev/null
 source "$HOME/scripts/setup/link_and_stow.sh"
-# shellcheck source=/dev/null
 source "$HOME/scripts/setup/build_keyd.sh"
-# shellcheck source=/dev/null
 source "$HOME/scripts/setup/setup_1password.sh"
-# shellcheck source=/dev/null
 source "$HOME/scripts/setup/enable_processes.sh"
-# shellcheck source=/dev/null
-source "$HOME/scripts/utils/help.sh"
-# shellcheck source=/dev/null
 source "$HOME/scripts/setup/build_packages.sh"
 
 echo "Starting setup..."
@@ -31,23 +24,14 @@ needs_reboot=false
 
 # Function to prompt user to run the setup
 prompt_run() {
-  echo -e "\n🔐 Welcome to the setup script! Would you like to run the setup with all options?"
-  read -r -p "(yes/no): " choice
-  case "$choice" in
-  yes | y)
+  if prompt_yes_no "\n🔐 Welcome to the setup script! Would you like to run the setup with all options?"; then
     echo -e "\n⚙️ Running with all options...\n"
     run_all=true
-    ;;
-  no | n)
+  else
     echo -e "\n❌ No flags provided. Please provide flags to specify the setup actions."
     show_help "setup"
     exit 1
-    ;;
-  *)
-    echo -e "❌ Invalid choice. Please answer with 'yes' or 'no'.\n"
-    prompt_run
-    ;;
-  esac
+  fi
 }
 
 # If no flags are passed, show the usage message and exit
