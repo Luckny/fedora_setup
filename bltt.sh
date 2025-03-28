@@ -1,12 +1,28 @@
 #!/bin/bash
 
+# shellcheck source=/dev/null
+source "$HOME/scripts/utils/help.sh"
+
 # Default scan time in seconds
 DEFAULT_SCAN_TIME=10
+TRUST_DEVICE=false
 
-# Get user-defined scan time or use default
-SCAN_TIME=${1:-$DEFAULT_SCAN_TIME}
+# Parse options
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+  --trust) TRUST_DEVICE=true ;;
+  [0-9]*) SCAN_TIME="$1" ;;
+  *)
+    echo "⚠️ Unknown option: $1"
+    show_help "bltctl"
+    exit 1
+    ;;
+  esac
+  shift
+done
 
-# Ensure input is a valid number
+# Ensure scan time is valid
+SCAN_TIME=${SCAN_TIME:-$DEFAULT_SCAN_TIME}
 if ! [[ "$SCAN_TIME" =~ ^[0-9]+$ ]]; then
   echo "⚠️ Invalid input: Scan time must be a positive number."
   exit 1
@@ -89,7 +105,12 @@ echo -e "\n⚡ Initiating connection to: $selected"
   bluetoothctl remove "$mac" >/dev/null 2>&1
   echo -e "pair $mac\n" | bluetoothctl >/dev/null 2>&1
   sleep 2
-  echo -e "trust $mac\n" | bluetoothctl >/dev/null 2>&1
+
+  # Conditionally trust the device
+  if [ "$TRUST_DEVICE" = true ]; then
+    echo -e "trust $mac\n" | bluetoothctl >/dev/null 2>&1
+  fi
+
   echo -e "connect $mac\n" | bluetoothctl >/dev/null 2>&1
 } &
 

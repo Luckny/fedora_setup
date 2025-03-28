@@ -2,7 +2,7 @@
 # Display usage information (for --help flag)
 show_help() {
   case "$1" in
-  "bltclt")
+  "bltctl")
     echo -e "\n📡 Bluetooth Control Script Help:"
     echo -e "  --trust        Trust the selected Bluetooth device after pairing."
     echo -e "  <scan_time>    Set scan duration in seconds (default: 10)."
