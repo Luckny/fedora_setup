@@ -21,3 +21,4 @@ libXinerama-devel
 libXi-devel
 bluez-libs
 bluez-libs-devel
+glibc-devel.i686
