@@ -2,6 +2,7 @@
 # shellcheck source=/dev/null
 source "$HOME/scripts/setup/build_keyd.sh"
 source "$HOME/scripts/setup/build_hyprshot.sh"
+source "$HOME/scripts/setup/neovim.sh"
 
 # Function to build a package
 build_package() {
@@ -24,6 +25,9 @@ build_package() {
     install_hyprshot
     ;;
 
+  neovim)
+    install_or_update_neovim
+    ;;
   *)
     echo -e "❌ Invalid flag: $package_name\n"
     show_help "setup"
