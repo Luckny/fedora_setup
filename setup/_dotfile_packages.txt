@@ -6,3 +6,4 @@ waybar
 mako
 swaylock
 hyprshot
+wlogout
