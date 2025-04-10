@@ -16,6 +16,7 @@ echo "Starting setup..."
 basic_packages_file="$HOME/scripts/setup/_basic_packages.txt"
 dotfile_packages_file="$HOME/scripts/setup/_dotfile_packages.txt"
 dev_packages_file="$HOME/scripts/setup/_dev_packages.txt"
+stm_dev_file="$HOME/scripts/setup/_stm_dev.txt"
 
 stow_list=("hypr" "tmux" "kitty" "code" "lazygit")
 
@@ -103,6 +104,11 @@ else
     --basic)
       echo -e "📦 Installing and stowing dotfiles...\n"
       install_packages_from_file "$basic_packages_file"
+      exit 0
+      ;;
+    --stm)
+      echo -e "📦 Installing and stowing dotfiles...\n"
+      install_packages_from_file "$stm_dev_file"
       exit 0
       ;;
     --clone-repos)
