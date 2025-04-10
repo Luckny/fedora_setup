@@ -1,8 +1,0 @@
-arm-none-eabi-gcc
-arm-none-eabi-gcc-cs
-arm-none-eabi-gcc-cs-c++
-arm-none-eabi-newlib
-bear
-openocd
-dfu-util
-java-11-openjdk
