@@ -2,22 +2,24 @@
 
 print_art() {
   cat <<EOF
-=======
+┌─┐┌─┐┌─┐
+│M││P││M│
+└─┘└─┘└─┘
 EOF
 }
+
+if [[ $# -eq 0 ]]; then
+  echo -e "❌ No flags provided"
+  exit 1
+fi
 
 clear
 print_art
 
 set -e # Exit immediately if any command fails
 
-source ./utils.sh
-source ./packages.conf
-
-if [[ $# -eq 0 ]]; then
-  echo -e "❌ No flags provided"
-  exit 1
-fi
+source "$HOME/scripts/utils.sh"
+source "$HOME/scripts/packages.conf"
 
 # Install Zsh if not installed
 if ! is_installed "zsh"; then
