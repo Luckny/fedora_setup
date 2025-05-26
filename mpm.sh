@@ -56,31 +56,7 @@ while [[ $# -gt 0 ]]; do
     exit 0
     ;;
   --lang)
-    # Remove --lang flag
-    shift
-    # Collect arguments into an array and shift them from $@
-    lang_args=()
-    while [[ $# -gt 0 && "$1" != --* ]]; do
-      lang_args+=("$1")
-      shift
-    done
-
-    if [[ ${#lang_args[@]} -eq 0 ]]; then
-      echo -e "❌ Error: --which language??"
-      exit 1
-    fi
-
-    for pkg in "${lang_args[@]}"; do
-      case "$pkg" in
-      c)
-        echo -e "📦 Installing C language packages...\n"
-        echo -e "But not really, you need to configure this"
-        ;;
-      *)
-        exit
-        ;;
-      esac
-    done
+    install_packages "${LANGUAGES[@]}"
     exit 0
     ;;
   *)
