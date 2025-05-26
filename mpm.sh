@@ -47,6 +47,10 @@ while [[ $# -gt 0 ]]; do
     install_packages "${KERNEL[@]}"
     exit 0
     ;;
+  --desktop)
+    install_packages "${DESKTOP[@]}"
+    exit 0
+    ;;
   --lang)
     # Remove --lang flag
     shift
