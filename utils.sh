@@ -26,7 +26,7 @@ build_from_source() {
   local package="$1"
   local base_name=$(get_base_package_name "$package")
   local build_script="$HOME/scripts/build_scripts/${base_name}.sh"
-  
+
   if [[ -f "$build_script" ]]; then
     echo "🔨 Building ${base_name} from source..."
     bash "$build_script"
@@ -61,4 +61,62 @@ install_packages() {
     echo -e "🚀 Installing : ${to_install[*]}..."
     sudo dnf install -y "${to_install[@]}"
   fi
+}
+
+# Function to display file content using bat or cat
+display_file() {
+  local file="$1"
+  if is_installed "bat" &>/dev/null; then
+    bat "$file"
+  else
+    cat "$file"
+  fi
+}
+
+# Function to verify and setup Git SSH identity
+verify_git_ssh() {
+  local ssh_dir="$HOME/.ssh"
+  local setup_needed=false
+
+  # Check if any SSH keys exist (looking for .pub files)
+  if ! ls "${ssh_dir}"/*.pub >/dev/null 2>&1; then
+    echo "❓ No SSH keys found. Would you like to create one? (y/n)"
+    read -r response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+      setup_needed=true
+    else
+      echo "⚠️ Skipping SSH key setup"
+      return 1
+    fi
+  fi
+
+  if [[ "$setup_needed" = true ]]; then
+    echo "🔑 Setting up new SSH key..."
+
+    # Get user email for SSH key
+    echo "Enter your email address for the SSH key:"
+    read -r email
+
+    # Get desired key name
+    echo "Enter a name for your SSH key (default: id_ed25519):"
+    read -r keyname
+    keyname=${keyname:-id_ed25519}
+    local key_file="$ssh_dir/$keyname"
+
+    # Generate SSH key
+    ssh-keygen -t ed25519 -C "$email" -f "$key_file"
+
+    # Start ssh-agent and add key
+    eval "$(ssh-agent -s)"
+    ssh-add "$key_file"
+
+    # Display the public key
+    echo -e "\n📋 Here's your public SSH key. Add it to your Git provider (e.g., GitHub):\n"
+    display_file "${key_file}.pub"
+
+    echo -e "\n✅ SSH key setup complete!"
+    return 0
+  fi
+
+  return 0
 }
