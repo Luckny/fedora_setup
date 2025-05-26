@@ -51,6 +51,10 @@ while [[ $# -gt 0 ]]; do
     install_packages "${DESKTOP[@]}"
     exit 0
     ;;
+  --ssh)
+    verify_git_ssh
+    exit 0
+    ;;
   --lang)
     # Remove --lang flag
     shift
@@ -77,6 +81,7 @@ while [[ $# -gt 0 ]]; do
         ;;
       esac
     done
+    exit 0
     ;;
   *)
     echo -e "❌ Invalid flag: $1\n"
@@ -84,5 +89,3 @@ while [[ $# -gt 0 ]]; do
     ;;
   esac
 done
-
-verify_git_ssh

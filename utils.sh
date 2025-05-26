@@ -36,33 +36,6 @@ build_from_source() {
   fi
 }
 
-# Install missing packages
-install_packages() {
-  local packages=("$@")
-  local to_install=()
-
-  for pkg in "${packages[@]}"; do
-    if is_source_package "$pkg"; then
-      local base_name=$(get_base_package_name "$pkg")
-      if ! is_installed "$base_name"; then
-        build_from_source "$pkg"
-      else
-        echo "✓ ${base_name} (source) is already installed"
-      fi
-    else
-      if ! is_installed "$pkg"; then
-        echo -e " ➕ New package $pkg."
-        to_install+=("$pkg")
-      fi
-    fi
-  done
-
-  if [ ${#to_install[@]} -gt 0 ]; then
-    echo -e "🚀 Installing : ${to_install[*]}..."
-    sudo dnf install -y "${to_install[@]}"
-  fi
-}
-
 # Function to display file content using bat or cat
 display_file() {
   local file="$1"
@@ -119,4 +92,33 @@ verify_git_ssh() {
   fi
 
   return 0
+}
+
+# Install missing packages
+install_packages() {
+  local packages=("$@")
+  local to_install=()
+
+  for pkg in "${packages[@]}"; do
+    if is_source_package "$pkg"; then
+      local base_name=$(get_base_package_name "$pkg")
+      if ! is_installed "$base_name"; then
+        build_from_source "$pkg"
+      else
+        echo "✓ ${base_name} (source) is already installed"
+      fi
+    else
+      if ! is_installed "$pkg"; then
+        echo -e " ➕ New package $pkg."
+        to_install+=("$pkg")
+      fi
+    fi
+  done
+
+  if [ ${#to_install[@]} -gt 0 ]; then
+    echo -e "🚀 Installing : ${to_install[*]}..."
+    sudo dnf install -y "${to_install[@]}"
+  fi
+
+  verify_git_ssh
 }
