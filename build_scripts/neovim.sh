@@ -14,7 +14,7 @@ done
 
 # Function to get latest Neovim version from GitHub API
 get_latest_version() {
-  curl -s 'https://api.github.com/repos/neovim/neovim/releases/latest' | \
+  curl -s 'https://api.github.com/repos/neovim/neovim/releases/latest' |
     jq -r '.tag_name'
 }
 
@@ -27,9 +27,9 @@ get_current_version() {
 install_neovim() {
   local version="$1"
   local BUILD_DIR="$HOME/.local/builds"
-  
+
   echo "🔄 Installing/Updating Neovim to ${version}..."
-  
+
   # Remove existing installation
   sudo rm -f /usr/local/bin/nvim
   sudo rm -rf /usr/local/share/nvim/
@@ -49,7 +49,7 @@ install_neovim() {
 
   echo "🔨 Building Neovim..."
   make CMAKE_BUILD_TYPE=Release
-  
+
   echo "📦 Installing Neovim..."
   sudo make install
 
@@ -60,8 +60,8 @@ install_neovim() {
 latest_version=$(get_latest_version)
 
 if is_installed "nvim"; then
-  current_version="v$(get_current_version)"
-  
+  current_version="$(get_current_version)"
+
   if [[ "$current_version" == "$latest_version" ]]; then
     echo "✓ Neovim is already up-to-date at version ${latest_version}"
     exit 0
@@ -81,4 +81,5 @@ else
     echo "❌ Cannot proceed without Neovim installed"
     exit 1
   fi
-fi 
+fi
+
